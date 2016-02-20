@@ -7,7 +7,7 @@ The GladLive.ProxyLoadBalancer is the entry point to the GladLive distributed ne
   - Tracking preformance of authentication subservers and scaling
   - Providing authenticated clients session tokens to connect into the GladLive network
 
-## GladLive Servers
+## GladLive Services
 
 GladLive.ProxyLoadBalancer: https://github.com/GladLive/GladLive.ProxyLoadBalancer
 
