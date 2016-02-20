@@ -1,0 +1,1 @@
+xbuild ./GladLive.ProxyLoadBalancer.sln /p:DebugSymbols=False
