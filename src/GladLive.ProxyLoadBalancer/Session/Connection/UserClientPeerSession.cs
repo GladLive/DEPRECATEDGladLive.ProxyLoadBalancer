@@ -14,8 +14,7 @@ namespace GladLive.ProxyLoadBalancer
 		public UserClientPeerSession(ILog logger, INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler) 
 			: base(logger, sender, details, subService, disconnectHandler)
 		{
-			//For testing
-			throw new EncoderFallbackException();
+			logger.Debug("Created new client session.");
 		}
 
 		protected override void OnReceiveRequest(PacketPayload payload, IMessageParameters parameters)

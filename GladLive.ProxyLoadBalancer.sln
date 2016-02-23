@@ -5,6 +5,12 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GladLive.ProxyLoadBalancer", "src\GladLive.ProxyLoadBalancer\GladLive.ProxyLoadBalancer.csproj", "{2ED8CCF3-EC28-42F2-8344-37E93551A8D5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C8AAD74A-34C5-4BB4-972C-66899262029A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D74ADDA9-1E88-4577-9191-7593745131B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GladLive.ProxyLoadBalancer.Tests", "tests\GladLive.ProxyLoadBalancer.Tests\GladLive.ProxyLoadBalancer.Tests.csproj", "{9AE2DB55-F8BF-45D1-88A9-D419EAF6F4B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +21,16 @@ Global
 		{2ED8CCF3-EC28-42F2-8344-37E93551A8D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ED8CCF3-EC28-42F2-8344-37E93551A8D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ED8CCF3-EC28-42F2-8344-37E93551A8D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AE2DB55-F8BF-45D1-88A9-D419EAF6F4B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AE2DB55-F8BF-45D1-88A9-D419EAF6F4B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AE2DB55-F8BF-45D1-88A9-D419EAF6F4B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AE2DB55-F8BF-45D1-88A9-D419EAF6F4B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2ED8CCF3-EC28-42F2-8344-37E93551A8D5} = {C8AAD74A-34C5-4BB4-972C-66899262029A}
+		{9AE2DB55-F8BF-45D1-88A9-D419EAF6F4B9} = {D74ADDA9-1E88-4577-9191-7593745131B3}
 	EndGlobalSection
 EndGlobal
