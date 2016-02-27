@@ -56,12 +56,12 @@
       <HintPath>..\..\packages\fasterflect.2.1.3\lib\net40\Fasterflect.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GladLive.Common, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GladLive.Common.1.0.5\lib\net35\GladLive.Common.dll</HintPath>
+    <Reference Include="GladLive.Common, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\GladLive.Common.1.0.8\lib\net35\GladLive.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GladLive.Server.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GladLive.Server.Common.1.0.3\lib\net45\GladLive.Server.Common.dll</HintPath>
+      <HintPath>..\..\packages\GladLive.Server.Common.1.0.7\lib\net45\GladLive.Server.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GladNet.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -116,12 +116,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GladLiveProxyLoadBalancerApplicationBase.cs" />
+    <Compile Include="IoC Modules\ProxyLoadBalancerAuthenticationServiceModule.cs" />
+    <Compile Include="IoC Modules\ProxyLoadBalancerAuthSessionHandlerModule.cs" />
+    <Compile Include="IoC Modules\ProxyLoadBalancerClientSessionHandlerModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerIncomingConnectionDependencyModule.cs" />
+    <Compile Include="IoC Modules\ProxyLoadBalancerPeerFactoryModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerSerializationModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerSessionModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session\Connection\AuthServicePeerSession.cs" />
     <Compile Include="Session\Auth\ProxyLoadBalancerConnectionGateKeeper.cs" />
+    <Compile Include="Session\Factory\IPeerFactoryService.cs" />
+    <Compile Include="Session\Factory\PeerFactory.cs" />
+    <Compile Include="Session\Factory\ProxyLoadBalancerClientPeerSessionFactory.cs" />
     <Compile Include="Session\ProxySessionType.cs" />
     <Compile Include="Session\ProxySessionTypePortConverter.cs" />
     <Compile Include="Session\Connection\UserClientPeerSession.cs" />
