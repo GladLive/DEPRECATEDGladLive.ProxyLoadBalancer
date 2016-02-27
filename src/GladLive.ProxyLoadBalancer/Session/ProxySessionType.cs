@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace GladLive.ProxyLoadBalancer
 {
+	/// <summary>
+	/// Enumeration of Session Types for the Proxy.
+	/// </summary>
 	public enum ProxySessionType : byte
 	{
 		Default,

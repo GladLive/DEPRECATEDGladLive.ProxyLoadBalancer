@@ -9,6 +9,9 @@ using Common.Logging;
 
 namespace GladLive.ProxyLoadBalancer
 {
+	/// <summary>
+	/// Represents an AuthService session connect to the server.
+	/// </summary>
 	public class AuthServicePeerSession : ServerPeerSession
 	{
 		public AuthServicePeerSession(ILog logger, INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService netMessageSubService, IDisconnectionServiceHandler disconnectHandler) 

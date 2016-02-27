@@ -12,6 +12,7 @@ using Autofac;
 using System.IO;
 using GladLive.ProxyLoadBalancer.Settings;
 using GladLive.Server.Common;
+using Autofac.Core;
 
 namespace GladLive.ProxyLoadBalancer
 {
@@ -69,17 +70,23 @@ namespace GladLive.ProxyLoadBalancer
 			{
 				case ProxySessionType.UserSession:
 					AppLogger.Debug("Creating client session.");
+					appBaseContainer.Resolve<UserClientPeerSession>(GenerateTypedParameter(sender), GenerateTypedParameter(details), GenerateTypedParameter(subService), GenerateTypedParameter(disconnectHandler));
 					return new UserClientPeerSession(AppLogger, sender, details, subService, disconnectHandler);
 
 				case ProxySessionType.AuthServiceSession:
 					AppLogger.Debug("Creating new un-authenticated authservice session.");
-					return new AuthServicePeerSession(AppLogger, sender, details, subService, disconnectHandler);
+					return appBaseContainer.Resolve<AuthServicePeerSession>(GenerateTypedParameter(sender), GenerateTypedParameter(details), GenerateTypedParameter(subService), GenerateTypedParameter(disconnectHandler));
 
 				case ProxySessionType.Default:
 				default:
 					AppLogger.ErrorFormat("An invalid {0} was generated from Port: {1}", nameof(ProxySessionType), details.LocalPort);
 					return null;
 			}
+		}
+
+		private Parameter GenerateTypedParameter<TParameterType>(TParameterType parameter)
+		{
+			return new TypedParameter(typeof(TParameterType), parameter);
 		}
 
 		protected override void Setup()
@@ -90,24 +97,13 @@ namespace GladLive.ProxyLoadBalancer
 			//We should setup AutoFac IoC with the dependencies it'll need to be resolving.
 			ContainerBuilder builder = new ContainerBuilder();
 
-			//Registers the protobuf serializer type for serialization
-			builder.RegisterType<GladNet.Serializer.Protobuf.ProtobufnetSerializerStrategy>()
-				.As<ISerializerStrategy>()
-				.InstancePerDependency();
+			builder.RegisterModule<ProxyLoadBalancerSerializationModule>();
+			builder.RegisterModule<ProxyLoadBalancerIncomingConnectionDependencyModule>();
+			builder.RegisterModule<ProxyLoadBalancerSessionModule>();
 
-			//Registers the protobuf deserializer type for deserialization
-			builder.RegisterType<GladNet.Serializer.Protobuf.ProtobufnetDeserializerStrategy>()
-				.As<IDeserializerStrategy>()
-				.InstancePerDependency();
-
-			
-			//Register ProxySession services like port convert and connection gatekeeper
-			builder.RegisterType<ProxySessionTypePortConverter>()
-				.As<IPortToSessionTypeService<ProxySessionType>>()
-				.SingleInstance();
-
-			builder.RegisterType<ProxyLoadBalancerConnectionGateKeeper>()
-				.As<IConnectionGateKeeper<ProxySessionType>>()
+			//Register the app-wide logging instance
+			builder.RegisterInstance(AppLogger)
+				.As<ILog>()
 				.SingleInstance();
 
 			//Builds out the IoC container
