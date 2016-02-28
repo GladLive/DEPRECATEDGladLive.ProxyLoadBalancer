@@ -31,7 +31,16 @@ namespace GladLive.ProxyLoadBalancer
 
 		protected override void OnReceiveRequest(PacketPayload payload, IMessageParameters parameters)
 		{
-			throw new NotImplementedException();
+			//We're not interested in unencrypted messages on the ProxyLoadBalancing server
+			/*if (!parameters.Encrypted)
+				return;
+			else
+				Logger.WarnFormat("AuthService: {0} at IP {1} tried to send unencrypted payload Type: {2}", PeerDetails.ConnectionID, PeerDetails.RemoteIP.ToString(), payload.GetType());*/
+
+			Logger.Debug("Recieved a message.");
+
+			//Pass this message to the handlers
+			requestHandler.TryProcessPayload(payload, parameters, this);
 		}
 	}
 }

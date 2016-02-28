@@ -26,8 +26,14 @@ namespace GladLive.ProxyLoadBalancer
 
 		public ILog Logger { get; }
 
+		/// <summary>
+		/// Factory delegate for <see cref="AuthServicePeerSession"/>s.
+		/// </summary>
 		private PeerFactory<AuthServicePeerSession> authPeerFactory { get; }
 
+		/// <summary>
+		/// Factory delegates for <see cref="UserClientPeerSession"/>.
+		/// </summary>
 		private PeerFactory<UserClientPeerSession> userPeerFactory { get; }
 
 		public ProxyLoadBalancerClientPeerSessionFactory(ILog logger, IConnectionGateKeeper<ProxySessionType> gateKeeper, IPortToSessionTypeService<ProxySessionType> portConverter,

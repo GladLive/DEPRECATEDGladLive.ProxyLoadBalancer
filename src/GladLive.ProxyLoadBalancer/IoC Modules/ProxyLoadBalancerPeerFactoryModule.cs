@@ -10,13 +10,16 @@ using System.Threading.Tasks;
 
 namespace GladLive.ProxyLoadBalancer
 {
+	/// <summary>
+	/// Module that handles registration for peer factories.
+	/// </summary>
 	public class ProxyLoadBalancerPeerFactoryModule : Module
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
 			//Register the peer factory
 			builder.RegisterType<ProxyLoadBalancerClientPeerSessionFactory>()
-				.AsImplementedInterfaces()
+				.As<IPeerFactoryService<ClientPeerSession, ProxySessionType>>()
 				.SingleInstance();
 
 			//The below code is complex. It involves: delegates, lambdas, captures and autofac
@@ -53,7 +56,6 @@ namespace GladLive.ProxyLoadBalancer
 		{
 			return context.Resolve<TSessionType>(GenerateTypedParameter(sender), GenerateTypedParameter(details), GenerateTypedParameter(subService), GenerateTypedParameter(disconnectHandler));
 		}
-
 
 		private Parameter GenerateTypedParameter<TParameterType>(TParameterType parameter)
 		{

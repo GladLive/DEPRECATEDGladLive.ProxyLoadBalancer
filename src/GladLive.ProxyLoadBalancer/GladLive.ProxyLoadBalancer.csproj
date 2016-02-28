@@ -129,6 +129,7 @@
     <Compile Include="Session\Factory\IPeerFactoryService.cs" />
     <Compile Include="Session\Factory\PeerFactory.cs" />
     <Compile Include="Session\Factory\ProxyLoadBalancerClientPeerSessionFactory.cs" />
+    <Compile Include="Session\Handlers\PayloadDebugLoggingHandler.cs" />
     <Compile Include="Session\ProxySessionType.cs" />
     <Compile Include="Session\ProxySessionTypePortConverter.cs" />
     <Compile Include="Session\Connection\UserClientPeerSession.cs" />
