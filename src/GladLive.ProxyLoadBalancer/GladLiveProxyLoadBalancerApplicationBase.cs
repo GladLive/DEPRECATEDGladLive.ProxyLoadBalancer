@@ -12,6 +12,7 @@ using Autofac;
 using System.IO;
 using GladLive.ProxyLoadBalancer.Settings;
 using GladLive.Server.Common;
+using Autofac.Core;
 
 namespace GladLive.ProxyLoadBalancer
 {
@@ -37,15 +38,7 @@ namespace GladLive.ProxyLoadBalancer
 		/// </summary>
 		private IContainer appBaseContainer;
 
-		/// <summary>
-		/// Security protection service for incoming connections.
-		/// </summary>
-		private IConnectionGateKeeper<ProxySessionType> connectionGateKeeper;
-
-		/// <summary>
-		/// Conversion service for port to <see cref="ProxySessionType"/>.
-		/// </summary>
-		private IPortToSessionTypeService<ProxySessionType> portToSessionTypeConverter;
+		private IPeerFactoryService<ClientPeerSession, ProxySessionType> peerFactory;
 
 		public override ServerPeer CreateServerPeer(INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler)
 		{
@@ -62,24 +55,7 @@ namespace GladLive.ProxyLoadBalancer
 
 		protected override ClientPeerSession CreateClientSession(INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler)
 		{
-			AppLogger.DebugFormat("Client trying to create session on Port: {0}", details.LocalPort);
-
-
-			switch (portToSessionTypeConverter.ToSessionType(details.LocalPort))
-			{
-				case ProxySessionType.UserSession:
-					AppLogger.Debug("Creating client session.");
-					return new UserClientPeerSession(AppLogger, sender, details, subService, disconnectHandler);
-
-				case ProxySessionType.AuthServiceSession:
-					AppLogger.Debug("Creating new un-authenticated authservice session.");
-					return new AuthServicePeerSession(AppLogger, sender, details, subService, disconnectHandler);
-
-				case ProxySessionType.Default:
-				default:
-					AppLogger.ErrorFormat("An invalid {0} was generated from Port: {1}", nameof(ProxySessionType), details.LocalPort);
-					return null;
-			}
+			return peerFactory.Create(sender, details, subService, disconnectHandler);
 		}
 
 		protected override void Setup()
@@ -90,24 +66,11 @@ namespace GladLive.ProxyLoadBalancer
 			//We should setup AutoFac IoC with the dependencies it'll need to be resolving.
 			ContainerBuilder builder = new ContainerBuilder();
 
-			//Registers the protobuf serializer type for serialization
-			builder.RegisterType<GladNet.Serializer.Protobuf.ProtobufnetSerializerStrategy>()
-				.As<ISerializerStrategy>()
-				.InstancePerDependency();
+			builder.RegisterAssemblyModules(typeof(GladLiveProxyLoadBalancerApplicationBase).Assembly);
 
-			//Registers the protobuf deserializer type for deserialization
-			builder.RegisterType<GladNet.Serializer.Protobuf.ProtobufnetDeserializerStrategy>()
-				.As<IDeserializerStrategy>()
-				.InstancePerDependency();
-
-			
-			//Register ProxySession services like port convert and connection gatekeeper
-			builder.RegisterType<ProxySessionTypePortConverter>()
-				.As<IPortToSessionTypeService<ProxySessionType>>()
-				.SingleInstance();
-
-			builder.RegisterType<ProxyLoadBalancerConnectionGateKeeper>()
-				.As<IConnectionGateKeeper<ProxySessionType>>()
+			//Register the app-wide logging instance
+			builder.RegisterInstance(AppLogger)
+				.As<ILog>()
 				.SingleInstance();
 
 			//Builds out the IoC container
@@ -120,33 +83,13 @@ namespace GladLive.ProxyLoadBalancer
 
 		public void InitServices()
 		{
-			this.portToSessionTypeConverter = appBaseContainer.Resolve<IPortToSessionTypeService<ProxySessionType>>();
-			this.connectionGateKeeper = appBaseContainer.Resolve<IConnectionGateKeeper<ProxySessionType>>();
-
+			peerFactory = appBaseContainer.Resolve<IPeerFactoryService<ClientPeerSession, ProxySessionType>>();
 			AppLogger.DebugFormat("GLADLIVE: {0} {1} complete.", nameof(GladLiveProxyLoadBalancerApplicationBase), nameof(InitServices));
 		}
 
 		protected override bool ShouldServiceIncomingPeerConnect(IConnectionDetails details)
 		{
-			//Check the gate if this is a valid port
-			if(connectionGateKeeper.isValidPort(details.LocalPort))
-			{
-				//If it's a valid port more needs to be done to protect the server
-				//AuthServices may have only a subset of valid remote IPs or something
-				//Because of this the gate keeper is delegated with the task of determining
-				//if we can connect. Could also prevent application-level DDOS by rejecting clients
-				//that are constantly connectiong
-				if (connectionGateKeeper.RequestPassage(portToSessionTypeConverter.ToSessionType(details.LocalPort), details))
-				{
-					return true;
-				}
-				else
-					//This means we had a potential malicious or miscongifured connection attempt
-					AppLogger.WarnFormat("{0} rejected connection for SessionType: {1} with IP {2}", 
-						nameof(IConnectionGateKeeper<ProxySessionType>), portToSessionTypeConverter.ToSessionType(details.LocalPort).ToString(), details.RemoteIP.ToString());
-			}
-
-			return false;
+			return peerFactory.CanCreate(details);
 		}
 
 		protected override void TearDown()
