@@ -38,6 +38,7 @@ namespace GladLive.ProxyLoadBalancer
 		/// </summary>
 		private IContainer appBaseContainer;
 
+		//This is NOT the UserClientPeer. ClientPeerSession is a GladNet type.
 		private IPeerFactoryService<ClientPeerSession, ProxySessionType> peerFactory;
 
 		public override ServerPeer CreateServerPeer(INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler)

@@ -124,7 +124,7 @@
     <Compile Include="IoC Modules\ProxyLoadBalancerSerializationModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerSessionModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Session\Connection\AuthServicePeerSession.cs" />
+    <Compile Include="Session\Connection\GameServicePeerSession.cs" />
     <Compile Include="Session\Auth\ProxyLoadBalancerConnectionGateKeeper.cs" />
     <Compile Include="Session\Factory\IPeerFactoryService.cs" />
     <Compile Include="Session\Factory\PeerFactory.cs" />

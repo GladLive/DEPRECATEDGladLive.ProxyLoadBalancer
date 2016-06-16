@@ -21,7 +21,7 @@ namespace GladLive.ProxyLoadBalancer
 		/// <returns>True if the port is valid and can connect.</returns>
 		public bool isValidPort(int port)
 		{
-			return InboundConnectionSettings.Default.AuthServiceSessionPort == port || InboundConnectionSettings.Default.ClientSessionPort == port;
+			return InboundConnectionSettings.Default.GameServiceSessionPort == port || InboundConnectionSettings.Default.ClientSessionPort == port;
 		}
 
 		/// <summary>

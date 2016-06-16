@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using GladLive.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,15 @@ namespace GladLive.ProxyLoadBalancer
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
-			//builder.RegisterAssemblyTypes(this.ThisAssembly)
-			//	.AsClosedTypesOf(typeof(IElevatedRequestPayloadHandler<>))
+			//Registers the User specific, and general Peer, request handlers.
+			builder.RegisterAssemblyTypes(this.ThisAssembly)
+				.AssignableTo<IRequestPayloadHandler<UserClientPeerSession>>()
+				.As<IRequestPayloadHandler<UserClientPeerSession>>();
+
+			//Register the handler service
+			builder.Register(con => new RequestPayloadHandlerService<UserClientPeerSession>(new ChainPayloadHandler<UserClientPeerSession>(con.Resolve<IEnumerable<IRequestPayloadHandler<UserClientPeerSession>>>())))
+				.As<IRequestPayloadHandlerService<UserClientPeerSession>>()
+				.SingleInstance();
 		}
 	}
 }

@@ -27,9 +27,9 @@ namespace GladLive.ProxyLoadBalancer
 		public ILog Logger { get; }
 
 		/// <summary>
-		/// Factory delegate for <see cref="AuthServicePeerSession"/>s.
+		/// Factory delegate for <see cref="GameServicePeerSession"/>s.
 		/// </summary>
-		private PeerFactory<AuthServicePeerSession> authPeerFactory { get; }
+		private PeerFactory<GameServicePeerSession> authPeerFactory { get; }
 
 		/// <summary>
 		/// Factory delegates for <see cref="UserClientPeerSession"/>.
@@ -37,7 +37,7 @@ namespace GladLive.ProxyLoadBalancer
 		private PeerFactory<UserClientPeerSession> userPeerFactory { get; }
 
 		public ProxyLoadBalancerClientPeerSessionFactory(ILog logger, IConnectionGateKeeper<ProxySessionType> gateKeeper, IPortToSessionTypeService<ProxySessionType> portConverter,
-			PeerFactory<AuthServicePeerSession> authFactory, PeerFactory<UserClientPeerSession> userFactory)
+			PeerFactory<GameServicePeerSession> authFactory, PeerFactory<UserClientPeerSession> userFactory)
 		{
 			connectionGateKeeper = gateKeeper;
 			portToSessionTypeConverter = portConverter;
@@ -53,7 +53,7 @@ namespace GladLive.ProxyLoadBalancer
 			if (connectionGateKeeper.isValidPort(details.LocalPort))
 			{
 				//If it's a valid port more needs to be done to protect the server
-				//AuthServices may have only a subset of valid remote IPs or something
+				//GameServers may have only a subset of valid remote IPs or something
 				//Because of this the gate keeper is delegated with the task of determining
 				//if we can connect. Could also prevent application-level DDOS by rejecting clients
 				//that are constantly connectiong
@@ -82,7 +82,7 @@ namespace GladLive.ProxyLoadBalancer
 					return userPeerFactory(sender, details, subService, disconnectHandler);
 					//return userPeerFactory(GenerateTypedParameter(sender), GenerateTypedParameter(details), GenerateTypedParameter(subService), GenerateTypedParameter(disconnectHandler));
 
-				case ProxySessionType.AuthServiceSession:
+				case ProxySessionType.GameServiceSession:
 					Logger.Debug("Creating new un-authenticated authservice session.");
 					return authPeerFactory(sender, details, subService, disconnectHandler);
 

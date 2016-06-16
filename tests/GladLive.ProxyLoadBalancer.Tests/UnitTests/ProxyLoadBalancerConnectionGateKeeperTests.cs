@@ -29,7 +29,7 @@ namespace GladLive.ProxyLoadBalancer.Tests
 			ProxyLoadBalancerConnectionGateKeeper keeper = new ProxyLoadBalancerConnectionGateKeeper();
 
 			//assert
-			Assert.True(keeper.isValidPort(InboundConnectionSettings.Default.AuthServiceSessionPort));
+			Assert.True(keeper.isValidPort(InboundConnectionSettings.Default.GameServiceSessionPort));
 			Assert.True(keeper.isValidPort(InboundConnectionSettings.Default.ClientSessionPort));
 		}
 
@@ -67,16 +67,16 @@ namespace GladLive.ProxyLoadBalancer.Tests
 		}
 
 		[Test]
-		public static void Test_Gatekeeper_Lets_AuthService_Connect_On_Auth_Port()
+		public static void Test_Gatekeeper_Lets_GameService_Connect_On_Game_Port()
 		{
 			//arrange
 			ProxyLoadBalancerConnectionGateKeeper keeper = new ProxyLoadBalancerConnectionGateKeeper();
 
 			Mock<IConnectionDetails> details = new Mock<IConnectionDetails>();
-			details.SetupGet(x => x.LocalPort).Returns(InboundConnectionSettings.Default.AuthServiceSessionPort);
+			details.SetupGet(x => x.LocalPort).Returns(InboundConnectionSettings.Default.GameServiceSessionPort);
 
 			//act
-			bool result = keeper.RequestPassage(ProxySessionType.AuthServiceSession, details.Object);
+			bool result = keeper.RequestPassage(ProxySessionType.GameServiceSession, details.Object);
 
 			//assert
 			Assert.IsTrue(result);

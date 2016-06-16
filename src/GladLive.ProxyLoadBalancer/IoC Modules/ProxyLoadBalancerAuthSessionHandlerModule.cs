@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GladLive.ProxyLoadBalancer
 {
-	public class ProxyLoadBalancerAuthSessionHandlerModule : Module
+	public class ProxyLoadBalancerGameSessionHandlerModule : Module
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
@@ -21,16 +21,16 @@ namespace GladLive.ProxyLoadBalancer
 			//This registers all elevated request handlers with the above method call
 			//allowing for resolving contravariant collections of them
 			builder.RegisterAssemblyTypes(this.ThisAssembly)
-				.AssignableTo<IElevatedRequestPayloadHandler<AuthServicePeerSession>>()
-				.As<IElevatedRequestPayloadHandler<AuthServicePeerSession>>();
+				.AssignableTo<IElevatedRequestPayloadHandler<GameServicePeerSession>>()
+				.As<IElevatedRequestPayloadHandler<GameServicePeerSession>>();
 
 			builder.RegisterAssemblyTypes(this.ThisAssembly)
-				.AssignableTo<IRequestPayloadHandler<AuthServicePeerSession>>()
-				.As<IRequestPayloadHandler<AuthServicePeerSession>>();
+				.AssignableTo<IRequestPayloadHandler<GameServicePeerSession>>()
+				.As<IRequestPayloadHandler<GameServicePeerSession>>();
 
-			builder.Register(con => new RequestPayloadHandlerService<AuthServicePeerSession>(new MultipleChainResponsbilityPayloadHandlerStrategy<AuthServicePeerSession>(new ChainPayloadHandler<AuthServicePeerSession>(con.Resolve<IEnumerable<IRequestPayloadHandler<AuthServicePeerSession>>>()),
-				new ElevatedSessionChainPayloadHandlerStrategyDecorator<AuthServicePeerSession>(con.Resolve<ILog>(), con.Resolve<IElevationVerificationService>(), new ChainPayloadHandler<AuthServicePeerSession>(con.Resolve<IEnumerable<IElevatedEventPayloadHandler<AuthServicePeerSession>>>())))))
-				.As<IRequestPayloadHandlerService<AuthServicePeerSession>>()
+			builder.Register(con => new RequestPayloadHandlerService<GameServicePeerSession>(new MultipleChainResponsbilityPayloadHandlerStrategy<GameServicePeerSession>(new ChainPayloadHandler<GameServicePeerSession>(con.Resolve<IEnumerable<IRequestPayloadHandler<GameServicePeerSession>>>()),
+				new ElevatedSessionChainPayloadHandlerStrategyDecorator<GameServicePeerSession>(con.Resolve<ILog>(), con.Resolve<IElevationVerificationService>(), new ChainPayloadHandler<GameServicePeerSession>(con.Resolve<IEnumerable<IElevatedEventPayloadHandler<GameServicePeerSession>>>())))))
+				.As<IRequestPayloadHandlerService<GameServicePeerSession>>()
 				.SingleInstance();
 		}
 	}

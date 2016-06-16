@@ -11,8 +11,19 @@ namespace GladLive.ProxyLoadBalancer
 	/// </summary>
 	public enum ProxySessionType : byte
 	{
+		/// <summary>
+		/// Default value.
+		/// </summary>
 		Default,
+
+		/// <summary>
+		/// User session type.
+		/// </summary>
 		UserSession,
-		AuthServiceSession
+
+		/// <summary>
+		/// Game server service type.
+		/// </summary>
+		GameServiceSession
 	}
 }
