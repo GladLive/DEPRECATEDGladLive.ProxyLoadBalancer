@@ -24,6 +24,10 @@ namespace GladLive.ProxyLoadBalancer
 				.AssignableTo<IElevatedRequestPayloadHandler<GameServicePeerSession>>()
 				.As<IElevatedRequestPayloadHandler<GameServicePeerSession>>();
 
+			/*builder.RegisterAssemblyTypes(typeof(AuthenticationRequestHandler<GameServicePeerSession>).Assembly)
+				.AssignableTo<IElevatedRequestPayloadHandler<GameServicePeerSession>>()
+				.As<IElevatedRequestPayloadHandler<GameServicePeerSession>>();*/
+
 			builder.RegisterAssemblyTypes(this.ThisAssembly)
 				.AssignableTo<IRequestPayloadHandler<GameServicePeerSession>>()
 				.As<IRequestPayloadHandler<GameServicePeerSession>>();
