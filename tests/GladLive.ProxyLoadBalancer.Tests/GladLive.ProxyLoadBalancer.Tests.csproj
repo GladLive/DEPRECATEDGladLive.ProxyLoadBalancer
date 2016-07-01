@@ -46,36 +46,40 @@
       <HintPath>..\..\packages\fasterflect.2.1.3\lib\net40\Fasterflect.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GladLive.Common, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GladLive.Common.1.0.8\lib\net35\GladLive.Common.dll</HintPath>
+    <Reference Include="GladLive.Common, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\GladLive.Common.1.0.11\lib\net35\GladLive.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GladLive.Server.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GladLive.Server.Common.1.0.7\lib\net45\GladLive.Server.Common.dll</HintPath>
+      <HintPath>..\..\packages\GladLive.Server.Common.1.0.8\lib\net45\GladLive.Server.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GladNet.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GladNet.Common.1.0.1\lib\net35\GladNet.Common.dll</HintPath>
+    <Reference Include="GladNet.Common, Version=1.0.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\GladNet.Common.1.0.15\lib\net35\GladNet.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GladNet.PhotonServer.Common, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GladNet.PhotonServer.Common.1.0.2\lib\net35\GladNet.PhotonServer.Common.dll</HintPath>
+    <Reference Include="GladNet.Payload, Version=1.0.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\GladNet.Payload.1.0.15\lib\net35\GladNet.Payload.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GladNet.PhotonServer.Server, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GladNet.PhotonServer.Server.1.0.2\lib\net45\GladNet.PhotonServer.Server.dll</HintPath>
+    <Reference Include="GladNet.PhotonServer.Common, Version=1.0.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\GladNet.PhotonServer.Common.1.0.13\lib\net35\GladNet.PhotonServer.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GladNet.Serializer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GladNet.Serializer.1.0.1\lib\net35\GladNet.Serializer.dll</HintPath>
+    <Reference Include="GladNet.PhotonServer.Server, Version=1.0.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\GladNet.PhotonServer.Server.1.0.13\lib\net45\GladNet.PhotonServer.Server.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GladNet.Serializer, Version=1.0.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\GladNet.Serializer.1.0.15\lib\net35\GladNet.Serializer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GladNet.Serializer.Protobuf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GladNet.Serializer.Protobuf.1.0.1\lib\net35\GladNet.Serializer.Protobuf.dll</HintPath>
+      <HintPath>..\..\packages\GladNet.Serializer.Protobuf.1.0.4\lib\net35\GladNet.Serializer.Protobuf.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GladNet.Server.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\GladNet.Server.Common.1.0.1\lib\net45\GladNet.Server.Common.dll</HintPath>
+    <Reference Include="GladNet.Server.Common, Version=1.0.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\GladNet.Server.Common.1.0.15\lib\net45\GladNet.Server.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
