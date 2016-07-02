@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace GladLive.ProxyLoadBalancer
 {
+	//We created this delegate definition for two reasons. One, simplier definition to work with inside of the factory
+	//Two, we needed a factory delegate to point to, in a clean way, for AutoFac factory delegate registration
 	/// <summary>
 	/// Defined simplified delegate type for a factory delegate that produces <typeparamref name="TPeerType"/> peers.
 	/// </summary>
