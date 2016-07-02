@@ -36,7 +36,7 @@ namespace GladLive.ProxyLoadBalancer
 		{
 			//We check logger null because we want to log now
 			Throw<ArgumentNullException>.If.IsNull(logger, nameof(logger), $"Logging service provided must be non-null.");
-			Throw<ArgumentNullException>.If.IsNull(requestHandler, nameof(logger), $"Request handling service provided must be non-null.");
+			Throw<ArgumentNullException>.If.IsNull(requestHandlerService, nameof(logger), $"Request handling service provided must be non-null.");
 
 			logger.Debug("Created new client session.");
 
