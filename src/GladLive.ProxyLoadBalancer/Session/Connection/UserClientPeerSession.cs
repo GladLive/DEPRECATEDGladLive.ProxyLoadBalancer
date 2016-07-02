@@ -29,14 +29,14 @@ namespace GladLive.ProxyLoadBalancer
 		/// <param name="details">Connection details for this specific incoming game server session.</param>
 		/// <param name="netMessageSubService">Subscription service for incoming messages.</param>
 		/// <param name="disconnectHandler">Disconnection handler for the session.</param>
-		/// <param name="requestHandlerService">Request payload handler for the session.</param>
+		/// <param name="requestHandler">Request payload handler for the session.</param>
 		public UserClientPeerSession(ILog logger, INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler,
 			IRequestPayloadHandlerService<UserClientPeerSession> requestHandler)
 			: base(logger, sender, details, subService, disconnectHandler)
 		{
 			//We check logger null because we want to log now
 			Throw<ArgumentNullException>.If.IsNull(logger, nameof(logger), $"Logging service provided must be non-null.");
-			Throw<ArgumentNullException>.If.IsNull(requestHandler, nameof(logger), $"Request handling service provided must be non-null.");
+			Throw<ArgumentNullException>.If.IsNull(requestHandler, nameof(requestHandler), $"Request handling service provided must be non-null.");
 
 			logger.Debug("Created new client session.");
 
