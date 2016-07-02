@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace GladLive.ProxyLoadBalancer
 {
-	public class ProxyLoadBalancerClientSessionHandlerModule : Module
+	public class ProxyLoadBalancerAuthServiceClientPeerHandlerModule : Module
 	{
 		//TODO: Extract this out using generics and provide it as a service throughout GladLive
 		protected override void Load(ContainerBuilder builder)
 		{
 			//Registers the User specific, and general Peer, request handlers.
 			builder.RegisterAssemblyTypes(this.ThisAssembly)
-				.AssignableTo<IRequestPayloadHandler<UserClientPeerSession>>()
-				.As<IRequestPayloadHandler<UserClientPeerSession>>();
+				.AssignableTo<IResponsePayloadHandler<AuthServiceClientPeer>>()
+				.As<IResponsePayloadHandler<AuthServiceClientPeer>>();
 
 			//Register the handler service
-			builder.Register(con => new RequestPayloadHandlerService<UserClientPeerSession>(new ChainPayloadHandler<UserClientPeerSession>(con.Resolve<IEnumerable<IRequestPayloadHandler<UserClientPeerSession>>>())))
-				.As<IRequestPayloadHandlerService<UserClientPeerSession>>()
+			builder.Register(con => new RequestPayloadHandlerService<AuthServiceClientPeer>(new ChainPayloadHandler<AuthServiceClientPeer>(con.Resolve<IEnumerable<IResponsePayloadHandler<AuthServiceClientPeer>>>())))
+				.As<IResponsePayloadHandlerService<AuthServiceClientPeer>>()
 				.SingleInstance();
 		}
 	}

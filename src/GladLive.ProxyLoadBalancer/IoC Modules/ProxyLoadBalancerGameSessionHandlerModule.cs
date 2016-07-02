@@ -13,6 +13,7 @@ namespace GladLive.ProxyLoadBalancer
 {
 	public class ProxyLoadBalancerGameSessionHandlerModule : Module
 	{
+		//TODO: Extract this out using generics and provide it as a service throughout GladLive
 		protected override void Load(ContainerBuilder builder)
 		{
 			//Register the elevated request handlers
