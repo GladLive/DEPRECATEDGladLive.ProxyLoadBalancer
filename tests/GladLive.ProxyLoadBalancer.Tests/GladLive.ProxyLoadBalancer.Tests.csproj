@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UnitTests\AutoFacTests.cs" />
+    <Compile Include="UnitTests\Peers\AuthServiceClientPeerTests.cs" />
     <Compile Include="UnitTests\Peers\UserClientPeerSessionTests.cs" />
     <Compile Include="UnitTests\Peers\GameServicePeerSessionTests.cs" />
     <Compile Include="UnitTests\ProxyLoadBalancerConnectionGateKeeperTests.cs" />
