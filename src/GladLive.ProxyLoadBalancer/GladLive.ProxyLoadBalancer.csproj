@@ -72,6 +72,14 @@
       <HintPath>..\..\packages\GladLive.Server.Common.1.0.8\lib\net45\GladLive.Server.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="GladNet.ASP.Client.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\GladNet.ASP.Client.Lib.1.0.0\lib\net35\GladNet.ASP.Client.Lib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GladNet.ASP.Client.RestSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\GladNet.ASP.Client.RestSharp.1.0.0\lib\net35\GladNet.ASP.Client.RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="GladNet.Common, Version=1.0.15.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\GladNet.Common.1.0.15\lib\net35\GladNet.Common.dll</HintPath>
       <Private>True</Private>
@@ -119,6 +127,10 @@
       <HintPath>..\..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -129,6 +141,7 @@
   <ItemGroup>
     <Compile Include="GladLiveProxyLoadBalancerApplicationBase.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerAuthenticationServiceModule.cs" />
+    <Compile Include="IoC Modules\ProxyLoadBalancerAuthWebClientServiceModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerGameSessionHandlerModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerClientSessionHandlerModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerIncomingConnectionDependencyModule.cs" />
