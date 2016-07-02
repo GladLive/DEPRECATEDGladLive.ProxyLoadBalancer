@@ -142,6 +142,7 @@
     <Compile Include="GladLiveProxyLoadBalancerApplicationBase.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerAuthenticationServiceModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerAuthServiceClientPeerHandlerModule.cs" />
+    <Compile Include="IoC Modules\ProxyLoadBalancerAuthServiceClientPeerModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerGameSessionHandlerModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerClientSessionHandlerModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerIncomingConnectionDependencyModule.cs" />
@@ -164,6 +165,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>InboundConnectionSettings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Settings\OutboundConnectionSettings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>OutboundConnectionSettings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -174,6 +180,10 @@
     <None Include="Settings\InboundConnectionSettings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>InboundConnectionSettings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Settings\OutboundConnectionSettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>OutboundConnectionSettings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup />
