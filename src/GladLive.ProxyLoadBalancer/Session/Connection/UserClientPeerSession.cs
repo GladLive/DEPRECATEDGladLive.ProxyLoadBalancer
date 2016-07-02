@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using GladNet.Common;
 using Common.Logging;
 using GladLive.Common;
+using Easyception;
 
 namespace GladLive.ProxyLoadBalancer
 {
@@ -33,6 +34,10 @@ namespace GladLive.ProxyLoadBalancer
 			IRequestPayloadHandlerService<UserClientPeerSession> requestHandler)
 			: base(logger, sender, details, subService, disconnectHandler)
 		{
+			//We check logger null because we want to log now
+			Throw<ArgumentNullException>.If.IsNull(logger, nameof(logger), $"Logging service provided must be non-null.");
+			Throw<ArgumentNullException>.If.IsNull(requestHandler, nameof(logger), $"Request handling service provided must be non-null.");
+
 			logger.Debug("Created new client session.");
 
 			requestHandlerService = requestHandler;
@@ -45,6 +50,12 @@ namespace GladLive.ProxyLoadBalancer
 		/// <param name="parameters">Parameters the message was sent with.</param>
 		protected override void OnReceiveRequest(PacketPayload payload, IMessageParameters parameters)
 		{
+			Throw<ArgumentNullException>.If
+				.IsNull(payload, nameof(payload), $"This indicates a critical error. The GladNet API has provided a null {nameof(PacketPayload)} to the {nameof(OnReceiveRequest)} method.");
+
+			Throw<ArgumentNullException>.If
+				.IsNull(parameters, nameof(parameters), $"This indicates a critical error. The GladNet API has provided a null {nameof(IMessageParameters)} to the {nameof(OnReceiveRequest)} method.");
+
 			//We're not interested in unencrypted messages on the ProxyLoadBalancing server
 			if (!parameters.Encrypted)
 			{
