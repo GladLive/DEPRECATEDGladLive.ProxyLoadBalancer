@@ -141,7 +141,6 @@
   <ItemGroup>
     <Compile Include="GladLiveProxyLoadBalancerApplicationBase.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerAuthenticationServiceModule.cs" />
-    <Compile Include="IoC Modules\ProxyLoadBalancerAuthWebClientServiceModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerGameSessionHandlerModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerClientSessionHandlerModule.cs" />
     <Compile Include="IoC Modules\ProxyLoadBalancerIncomingConnectionDependencyModule.cs" />
