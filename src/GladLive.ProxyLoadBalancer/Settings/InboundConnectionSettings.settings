@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GladLive.ProxyLoadBalancer.Settings" GeneratedClassName="InboundConnectionSettings">
   <Profiles />
   <Settings>
-    <Setting Name="AuthServiceSessionPort" Type="System.Int32" Scope="Application">
+    <Setting Name="GameServiceSessionPort" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">5056</Value>
     </Setting>
     <Setting Name="ClientSessionPort" Type="System.Int32" Scope="Application">

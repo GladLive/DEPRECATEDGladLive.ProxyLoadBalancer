@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Core;
+using GladLive.Common.Payloads;
 using GladNet.Serializer;
 using GladNet.Serializer.Protobuf;
 using System;
@@ -26,6 +27,10 @@ namespace GladLive.ProxyLoadBalancer
 			builder.RegisterType<ProtobufnetDeserializerStrategy>()
 				.As<IDeserializerStrategy>()
 				.InstancePerDependency();
+
+			ProtobufnetRegistry registry = new ProtobufnetRegistry();
+
+			registry.Register(typeof(LoginRequest));
 		}
 	}
 }

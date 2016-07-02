@@ -38,19 +38,15 @@ namespace GladLive.ProxyLoadBalancer
 		/// </summary>
 		private IContainer appBaseContainer;
 
+		//This is NOT the UserClientPeer. ClientPeerSession is a GladNet type.
 		private IPeerFactoryService<ClientPeerSession, ProxySessionType> peerFactory;
 
-		public override ServerPeer CreateServerPeer(INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler)
+		public override ClientPeer CreateServerPeer(INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler)
 		{
 			//This shouldn't be called by the ProxyLoadBalancing server
 			AppLogger.ErrorFormat("Outgoing connection attempt on Proxy to IP {0} Port {1}. Proxy should not be connecting to other peers", details.RemoteIP, details.RemotePort);
 
 			return null;
-		}
-
-		public override ServerPeerSession CreateServerPeerSession(INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler)
-		{
-			throw new NotImplementedException("This is deprecated and will be removed. Somehow a someone tried to create a peer session.");
 		}
 
 		protected override ClientPeerSession CreateClientSession(INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler)

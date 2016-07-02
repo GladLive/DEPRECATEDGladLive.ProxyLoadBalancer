@@ -32,7 +32,7 @@ namespace GladLive.ProxyLoadBalancer
 			{
 				IComponentContext capturableContext = con.Resolve<IComponentContext>();
 
-				return new PeerFactory<AuthServicePeerSession>((s, d, ss, dh) => SessionResolve<AuthServicePeerSession>(capturableContext, s, d, ss, dh));
+				return new PeerFactory<GameServicePeerSession>((s, d, ss, dh) => SessionResolve<GameServicePeerSession>(capturableContext, s, d, ss, dh));
 			})
 				.AsSelf()
 				.SingleInstance();

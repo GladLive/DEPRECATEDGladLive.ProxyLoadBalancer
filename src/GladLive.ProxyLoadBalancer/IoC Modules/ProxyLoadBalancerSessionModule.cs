@@ -19,7 +19,7 @@ namespace GladLive.ProxyLoadBalancer
 				.AsSelf()
 				.InstancePerDependency();
 
-			builder.RegisterType<AuthServicePeerSession>()
+			builder.RegisterType<GameServicePeerSession>()
 				.AsSelf()
 				.InstancePerDependency();
 		}

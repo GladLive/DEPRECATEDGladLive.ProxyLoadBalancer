@@ -25,7 +25,7 @@ namespace GladLive.ProxyLoadBalancer.Tests
 			ProxySessionTypePortConverter converter = new ProxySessionTypePortConverter();
 
 			//assert
-			Assert.AreEqual(ProxySessionType.AuthServiceSession, converter.ToSessionType(InboundConnectionSettings.Default.AuthServiceSessionPort));
+			Assert.AreEqual(ProxySessionType.GameServiceSession, converter.ToSessionType(InboundConnectionSettings.Default.GameServiceSessionPort));
 			Assert.AreEqual(ProxySessionType.UserSession, converter.ToSessionType(InboundConnectionSettings.Default.ClientSessionPort));
 		}
 	}

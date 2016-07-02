@@ -26,9 +26,9 @@ namespace GladLive.ProxyLoadBalancer.Settings {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5056")]
-        public int AuthServiceSessionPort {
+        public int GameServiceSessionPort {
             get {
-                return ((int)(this["AuthServiceSessionPort"]));
+                return ((int)(this["GameServiceSessionPort"]));
             }
         }
         

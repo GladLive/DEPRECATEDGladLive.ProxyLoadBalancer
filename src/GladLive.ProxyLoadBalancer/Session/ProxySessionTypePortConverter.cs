@@ -21,8 +21,8 @@ namespace GladLive.ProxyLoadBalancer
 		public ProxySessionType ToSessionType(int port)
 		{
 			//can't do switch because non-const source values
-			if (port == InboundConnectionSettings.Default.AuthServiceSessionPort)
-				return ProxySessionType.AuthServiceSession;
+			if (port == InboundConnectionSettings.Default.GameServiceSessionPort)
+				return ProxySessionType.GameServiceSession;
 			else if (port == InboundConnectionSettings.Default.ClientSessionPort)
 				return ProxySessionType.UserSession;
 
