@@ -64,9 +64,11 @@ namespace GladLive.ProxyLoadBalancer
 
 			//We're not interested in unencrypted messages on the ProxyLoadBalancing server
 			if (!parameters.Encrypted)
-				return;
-			else
+			{
 				Logger.WarnFormat("GameService: {0} at IP {1} tried to send unencrypted payload Type: {2}", PeerDetails.ConnectionID, PeerDetails.RemoteIP.ToString(), payload.GetType());
+				return;
+			}
+				
 
 			Logger.Debug("GameService Recieved a message.");
 
