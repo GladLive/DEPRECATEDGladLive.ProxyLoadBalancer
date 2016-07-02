@@ -32,7 +32,13 @@ namespace GladLive.ProxyLoadBalancer
 				WebPeerClientMessageSender webMessageSender = new WebPeerClientMessageSender(new RestSharpCurrentThreadEnqueueRequestHandlerStrategy(OutboundConnectionSettings.Default.AuthServiceIP, con.Resolve<IDeserializerStrategy>(), publisher));
 
 				//Because this differs in GladNet implementation we must resolve some of these depencencies manually
-				return new AuthServiceClientPeer(con.Resolve<ILog>(), webMessageSender, new WebClientPeerDetails(OutboundConnectionSettings.Default.AuthServiceIP, -1, 0), publisher, con.Resolve<IDisconnectionServiceHandler>(), con.Resolve<IResponsePayloadHandlerService<AuthServiceClientPeer>>());
+				AuthServiceClientPeer peer = new AuthServiceClientPeer(con.Resolve<ILog>(), webMessageSender, new WebClientPeerDetails(OutboundConnectionSettings.Default.AuthServiceIP, -1, 0), publisher, con.Resolve<IDisconnectionServiceHandler>(), con.Resolve<IResponsePayloadHandlerService<AuthServiceClientPeer>>());
+
+				//TODO: Use ping the webserver so we can give a real status
+				//Because this is web service we don't really connect to it like the other RUDP connections so we should spoof the NetStatus
+				publisher.OnNetworkMessageReceive(new GladNet.PhotonServer.Common.PhotonStatusMessageAdapter(NetStatus.Connected), null);
+
+				return peer;
 			})
 				.AsSelf()
 				.SingleInstance();
