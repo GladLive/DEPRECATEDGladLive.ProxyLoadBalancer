@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using Common.Logging;
 using Easyception;
 using GladLive.Common;
+using System.Net;
 
 namespace GladLive.ProxyLoadBalancer
 {
 	/// <summary>
 	/// Represents an outgoing client connection to the auth service.
 	/// </summary>
-	public class AuthServiceClientPeer : ClientPeer
+	public class AuthServiceClientPeer : ClientPeer, IUserAuthService
 	{
 		/// <summary>
 		/// Response payload handling service for <see cref="PacketPayload"/> and <see cref="AuthServiceClientPeer"/> pairs.
@@ -76,6 +77,17 @@ namespace GladLive.ProxyLoadBalancer
 				//TODO: When message parameters are implemented for GladNet.ASP.Client we should include them in the logging statement.
 				Logger.Warn($"Failed to handle response message in {nameof(OnReceiveResponse)} for Type {nameof(AuthServiceClientPeer)} with PayloadType {payload.GetType().Name}.");
 			}
+		}
+
+		//implementation of: IUserAuthService
+		public AuthServiceState TryAuthenticateUser(IPAddress ipOfUser, string userLoginString, byte[] userPassword)
+		{
+			if (this.CanSend(OperationType.Request) && this.Status == NetStatus.Connected)
+			{
+				throw new NotImplementedException();
+			}
+			else
+				return AuthServiceState.Unavailable;
 		}
 	}
 }
