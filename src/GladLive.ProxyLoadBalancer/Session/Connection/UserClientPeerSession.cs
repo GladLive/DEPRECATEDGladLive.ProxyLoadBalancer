@@ -36,7 +36,7 @@ namespace GladLive.ProxyLoadBalancer
 		{
 			//We check logger null because we want to log now
 			Throw<ArgumentNullException>.If.IsNull(logger, nameof(logger), $"Logging service provided must be non-null.");
-			Throw<ArgumentNullException>.If.IsNull(requestHandlerService, nameof(logger), $"Request handling service provided must be non-null.");
+			Throw<ArgumentNullException>.If.IsNull(requestHandler, nameof(logger), $"Request handling service provided must be non-null.");
 
 			logger.Debug("Created new client session.");
 
@@ -59,7 +59,7 @@ namespace GladLive.ProxyLoadBalancer
 			//We're not interested in unencrypted messages on the ProxyLoadBalancing server
 			if (!parameters.Encrypted)
 			{
-				Logger.WarnFormat("Client: {0} at IP {1} tried to send unencrypted payload Type: {2}", PeerDetails.ConnectionID, PeerDetails.RemoteIP.ToString(), payload.GetType());
+				Logger.WarnFormat("Client: {0} at IP {1} tried to send unencrypted payload Type: {2}", PeerDetails.ConnectionID, PeerDetails.RemoteIP, payload.GetType());
 				return;
 			}
 				

@@ -14,7 +14,7 @@ using Moq.Protected;
 namespace GladLive.ProxyLoadBalancer.Tests
 {
 	[TestFixture]
-	public static class GameServicePeerSessionTests
+	public static class UserClientPeerSessionTests
 	{
 		[Test]
 		public static void Test_Ctor_Doesnt_Throw_On_Non_Null_Parameters()
@@ -22,8 +22,8 @@ namespace GladLive.ProxyLoadBalancer.Tests
 			//These sorts of tests might seem stupid but it just caught two faults
 			//I checked the wrong object for null.
 			//assert
-			Assert.DoesNotThrow(() => new GameServicePeerSession(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
-				Mock.Of<IConnectionDetails>(), Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), Mock.Of<IRequestPayloadHandlerService<GameServicePeerSession>>()));
+			Assert.DoesNotThrow(() => new UserClientPeerSession(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
+				Mock.Of<IConnectionDetails>(), Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), Mock.Of<IRequestPayloadHandlerService<UserClientPeerSession>>()));
 		}
 
 		[Test]
@@ -32,7 +32,7 @@ namespace GladLive.ProxyLoadBalancer.Tests
 			//These sorts of tests might seem stupid but it just caught two faults
 			//I checked the wrong object for null.
 			//assert
-			Assert.Throws<ArgumentNullException>(() => new GameServicePeerSession(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
+			Assert.Throws<ArgumentNullException>(() => new UserClientPeerSession(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
 				Mock.Of<IConnectionDetails>(), Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), null));
 		}
 
@@ -40,8 +40,8 @@ namespace GladLive.ProxyLoadBalancer.Tests
 		public static void Test_Session_Doesnt_Process_Unencrypted_Messages()
 		{
 			//arrange
-			Mock<IRequestPayloadHandlerService<GameServicePeerSession>> handler = new Mock<IRequestPayloadHandlerService<GameServicePeerSession>>(MockBehavior.Loose);
-			GameServicePeerSession session = new GameServicePeerSession(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
+			Mock<IRequestPayloadHandlerService<UserClientPeerSession>> handler = new Mock<IRequestPayloadHandlerService<UserClientPeerSession>>(MockBehavior.Loose);
+			UserClientPeerSession session = new UserClientPeerSession(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
 				new Mock<IConnectionDetails>(MockBehavior.Loose).Object, Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), handler.Object);
 			Mock<IMessageParameters> messageParameters = new Mock<IMessageParameters>();
 			messageParameters.SetupGet(mp => mp.Encrypted).Returns(false);
@@ -60,8 +60,8 @@ namespace GladLive.ProxyLoadBalancer.Tests
 		public static void Test_Session_Does_Process_Encrypted_Messages()
 		{
 			//arrange
-			Mock<IRequestPayloadHandlerService<GameServicePeerSession>> handler = new Mock<IRequestPayloadHandlerService<GameServicePeerSession>>(MockBehavior.Loose);
-			GameServicePeerSession session = new GameServicePeerSession(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
+			Mock<IRequestPayloadHandlerService<UserClientPeerSession>> handler = new Mock<IRequestPayloadHandlerService<UserClientPeerSession>>(MockBehavior.Loose);
+			UserClientPeerSession session = new UserClientPeerSession(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
 				new Mock<IConnectionDetails>(MockBehavior.Loose).Object, Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), handler.Object);
 			Mock<IMessageParameters> messageParameters = new Mock<IMessageParameters>();
 			messageParameters.SetupGet(mp => mp.Encrypted).Returns(true);
@@ -80,8 +80,8 @@ namespace GladLive.ProxyLoadBalancer.Tests
 		public static void Test_Session_Throws_Null_Arg_OnRequestRecieve_When_Payload_Is_Null()
 		{
 			//arrange
-			GameServicePeerSession session = new GameServicePeerSession(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
-				new Mock<IConnectionDetails>(MockBehavior.Loose).Object, Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), Mock.Of<IRequestPayloadHandlerService<GameServicePeerSession>>());
+			UserClientPeerSession session = new UserClientPeerSession(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
+				new Mock<IConnectionDetails>(MockBehavior.Loose).Object, Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), Mock.Of<IRequestPayloadHandlerService<UserClientPeerSession>>());
 
 			//assert
 			Assert.Throws<ArgumentNullException>(() => GrabProtectedOnRecieveRequestMethod(session).Invoke(null, Mock.Of<IMessageParameters>()));
@@ -91,14 +91,14 @@ namespace GladLive.ProxyLoadBalancer.Tests
 		public static void Test_Session_Throws_Null_Arg_OnRequestRecieve_When_MessageParameters_Is_Null()
 		{
 			//arrange
-			GameServicePeerSession session = new GameServicePeerSession(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
-				new Mock<IConnectionDetails>(MockBehavior.Loose).Object, Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), Mock.Of<IRequestPayloadHandlerService<GameServicePeerSession>>());
+			UserClientPeerSession session = new UserClientPeerSession(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
+				new Mock<IConnectionDetails>(MockBehavior.Loose).Object, Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), Mock.Of<IRequestPayloadHandlerService<UserClientPeerSession>>());
 
 			//assert
 			Assert.Throws<ArgumentNullException>(() => GrabProtectedOnRecieveRequestMethod(session).Invoke(Mock.Of<PacketPayload>(), null));
 		}
 
-		public static Action<PacketPayload, IMessageParameters> GrabProtectedOnRecieveRequestMethod(GameServicePeerSession session)
+		public static Action<PacketPayload, IMessageParameters> GrabProtectedOnRecieveRequestMethod(UserClientPeerSession session)
 		{
 			return Delegate.CreateDelegate(typeof(Action<PacketPayload, IMessageParameters>), session, session.GetType().GetMethod("OnReceiveRequest", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public, null, new Type[] { typeof(PacketPayload), typeof(IMessageParameters) }, null)) as Action<PacketPayload, IMessageParameters>;
 		}
