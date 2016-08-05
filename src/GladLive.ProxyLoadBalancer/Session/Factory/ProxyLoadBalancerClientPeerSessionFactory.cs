@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GladNet.Common;
-using GladNet.Server.Common;
 using GladLive.Server.Common;
 using Common.Logging;
 using Autofac.Core;
 using Autofac;
+using GladNet.Engine.Server;
+using GladNet.Engine.Common;
 
 namespace GladLive.ProxyLoadBalancer
 {
@@ -70,7 +71,7 @@ namespace GladLive.ProxyLoadBalancer
 			return false;
 		}
 
-		public ClientPeerSession Create(INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler)
+		public ClientPeerSession Create(INetworkMessageRouterService sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler, INetworkMessageRouteBackService routeBack)
 		{
 			Logger.DebugFormat("Client trying to create session on Port: {0}", details.LocalPort);
 
@@ -79,12 +80,12 @@ namespace GladLive.ProxyLoadBalancer
 			{
 				case ProxySessionType.UserSession:
 					Logger.Debug("Creating client session.");
-					return userPeerFactory(sender, details, subService, disconnectHandler);
+					return userPeerFactory(sender, details, subService, disconnectHandler, routeBack);
 					//return userPeerFactory(GenerateTypedParameter(sender), GenerateTypedParameter(details), GenerateTypedParameter(subService), GenerateTypedParameter(disconnectHandler));
 
 				case ProxySessionType.GameServiceSession:
 					Logger.Debug("Creating new un-authenticated authservice session.");
-					return authPeerFactory(sender, details, subService, disconnectHandler);
+					return authPeerFactory(sender, details, subService, disconnectHandler, routeBack);
 
 				case ProxySessionType.Default:
 				default:

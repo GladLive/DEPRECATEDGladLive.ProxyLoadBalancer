@@ -1,4 +1,5 @@
 ﻿using GladNet.Common;
+using GladNet.Engine.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,6 @@ namespace GladLive.ProxyLoadBalancer
 	/// <param name="subService">Message subscription service.</param>
 	/// <param name="disconnectHandler">Disconnection handler and subscription service.</param>
 	/// <returns>A new non-null instance of <typeparamref name="TPeerType"/> or throws.</returns>
-	public delegate TPeerType PeerFactory<TPeerType>(INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler)
+	public delegate TPeerType PeerFactory<TPeerType>(INetworkMessageRouterService sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler, INetworkMessageRouteBackService routeBack)
 		where TPeerType : INetPeer;
 }
