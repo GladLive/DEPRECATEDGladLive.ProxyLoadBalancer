@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GladNet.Common;
 using GladLive.ProxyLoadBalancer.Settings;
+using GladNet.Engine.Common;
 
 namespace GladLive.ProxyLoadBalancer
 {

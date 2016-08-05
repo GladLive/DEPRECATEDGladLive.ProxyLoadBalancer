@@ -19,6 +19,13 @@ namespace GladLive.ProxyLoadBalancer
 		/// <param name="userLoginString">User login string (Ex. Login name, email, accountname or etc)</param>
 		/// <param name="userPassword">Encrypted password of the user.</param>
 		/// <returns>This indicates only whether the Authservice is available. Not the success of the response.</returns>
-		AuthServiceState TryAuthenticateUser(IPAddress ipOfUser, string userLoginString, byte[] userPassword);
+		void TryAuthenticateUser(IPAddress ipOfUser, string userLoginString, byte[] userPassword);
+
+
+		/// <summary>
+		/// Checks/verifies the current state of the <see cref="IUserAuthService"/>.
+		/// </summary>
+		/// <returns>This indicates only whether the Authservice is available.</returns>
+		AuthServiceState CheckServiceState();
 	}
 }

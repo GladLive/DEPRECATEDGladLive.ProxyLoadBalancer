@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace GladLive.ProxyLoadBalancer
 {
 	//TODO: Find a way to order handlers by priority
-	public class PayloadDebugLoggingHandler : IRequestPayloadHandler<INetPeer>//, IEventPayloadHandler<INetPeer>, IResponsePayloadHandler<INetPeer>, IClassLogger
+	public class PayloadDebugLoggingHandler : IRequestPayloadHandler<INetPeer>, IEventPayloadHandler<INetPeer>, IResponsePayloadHandler<INetPeer>, IClassLogger
 	{
 		public ILog Logger { get; }
 

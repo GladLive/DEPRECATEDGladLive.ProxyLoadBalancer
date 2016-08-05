@@ -3,6 +3,7 @@ using Autofac.Builder;
 using Autofac.Features.Variance;
 using Common.Logging;
 using GladLive.Common;
+using GladLive.Security.Common;
 using GladLive.Server.Common;
 using GladNet.Common;
 using Moq;
