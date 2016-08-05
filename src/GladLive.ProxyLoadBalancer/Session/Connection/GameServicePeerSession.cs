@@ -9,6 +9,9 @@ using Common.Logging;
 using GladLive.Server.Common;
 using GladLive.Common;
 using Easyception;
+using GladNet.Message.Handlers;
+using GladNet.Engine.Common;
+using GladNet.Engine.Server;
 
 namespace GladLive.ProxyLoadBalancer
 {
@@ -25,7 +28,7 @@ namespace GladLive.ProxyLoadBalancer
 		/// <summary>
 		/// Request payload handler service.
 		/// </summary>
-		private IRequestPayloadHandlerService<GameServicePeerSession> requestHandlerService { get; }
+		private IResponseMessageHandlerService<GameServicePeerSession> requestHandlerService { get; }
 
 		/// <summary>
 		/// Creates a new object that represents a game server session.
