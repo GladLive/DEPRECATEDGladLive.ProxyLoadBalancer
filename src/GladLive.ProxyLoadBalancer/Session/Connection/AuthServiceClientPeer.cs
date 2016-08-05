@@ -36,7 +36,7 @@ namespace GladLive.ProxyLoadBalancer
 		/// <param name="disconnectHandler">Disconnection handler for the session.</param>
 		/// <param name="responseHandler">Request payload handler for the session.</param>
 		public AuthServiceClientPeer(ILog logger, INetworkMessageRouterService messageSender, IConnectionDetails details, 
-			INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler, IResponseMessageHandlerService<AuthServiceClientPeer> responseHandler, INetworkMessageRouteBackService routebackService) 
+			INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler, INetworkMessageRouteBackService routebackService, IResponseMessageHandlerService<AuthServiceClientPeer> responseHandler) 
 			: base(logger, messageSender, details, subService, disconnectHandler, routebackService)
 		{
 			//We check logger null because we want to log now

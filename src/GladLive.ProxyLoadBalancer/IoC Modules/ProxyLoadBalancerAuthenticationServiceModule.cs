@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using GladLive.Security.Common;
 using GladLive.Server.Common;
 using System;
 using System.Collections.Generic;

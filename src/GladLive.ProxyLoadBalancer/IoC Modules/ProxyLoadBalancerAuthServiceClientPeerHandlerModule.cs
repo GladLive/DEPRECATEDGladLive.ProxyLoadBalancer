@@ -1,5 +1,7 @@
 ﻿using Autofac;
 using GladLive.Common;
+using GladNet.Message;
+using GladNet.Message.Handlers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +17,12 @@ namespace GladLive.ProxyLoadBalancer
 		{
 			//Registers the User specific, and general Peer, request handlers.
 			builder.RegisterAssemblyTypes(this.ThisAssembly)
-				.AssignableTo<IResponsePayloadHandler<AuthServiceClientPeer>>()
-				.As<IResponsePayloadHandler<AuthServiceClientPeer>>();
+				.AssignableTo<IResponseMessageHandler<AuthServiceClientPeer>>()
+				.As<IResponseMessageHandler<AuthServiceClientPeer>>();
 
 			//Register the handler service
-			builder.Register(con => new RequestPayloadHandlerService<AuthServiceClientPeer>(new ChainPayloadHandler<AuthServiceClientPeer>(con.Resolve<IEnumerable<IResponsePayloadHandler<AuthServiceClientPeer>>>())))
-				.As<IResponsePayloadHandlerService<AuthServiceClientPeer>>()
+			builder.Register(con => con.Resolve<IEnumerable<IResponseMessageHandler<AuthServiceClientPeer>>>().ToChainHandler().ToService())
+				.As<IResponseMessageHandlerService<AuthServiceClientPeer>>()
 				.SingleInstance();
 		}
 	}

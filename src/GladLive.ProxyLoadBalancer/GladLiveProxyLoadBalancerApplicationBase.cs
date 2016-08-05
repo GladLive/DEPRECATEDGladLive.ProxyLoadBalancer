@@ -7,27 +7,19 @@ using System.Threading.Tasks;
 using Common.Logging;
 using GladNet.Common;
 using GladNet.Serializer;
-using GladNet.Server.Common;
 using Autofac;
 using System.IO;
 using GladLive.ProxyLoadBalancer.Settings;
 using GladLive.Server.Common;
 using Autofac.Core;
+using GladNet.Serializer.Protobuf;
+using GladNet.Engine.Common;
+using GladNet.Engine.Server;
 
 namespace GladLive.ProxyLoadBalancer
 {
-	public class GladLiveProxyLoadBalancerApplicationBase : GladNetAppBase
+	public class GladLiveProxyLoadBalancerApplicationBase : GladNetAppBase<ProtobufnetSerializerStrategy, ProtobufnetDeserializerStrategy, ProtobufnetRegistry>
 	{
-		/// <summary>
-		/// Deserialization strategy for incoming messages.
-		/// </summary>
-		public override IDeserializerStrategy Deserializer { get { return appBaseContainer.Resolve<IDeserializerStrategy>(); } protected set { } }
-
-		/// <summary>
-		/// Serialization strategy for outgoing messages.
-		/// </summary>
-		public override ISerializerStrategy Serializer { get { return appBaseContainer.Resolve<ISerializerStrategy>(); } protected set { } }
-
 		/// <summary>
 		/// Application logging service.
 		/// </summary>
@@ -41,20 +33,7 @@ namespace GladLive.ProxyLoadBalancer
 		//This is NOT the UserClientPeer. ClientPeerSession is a GladNet type.
 		private IPeerFactoryService<ClientPeerSession, ProxySessionType> peerFactory;
 
-		public override ClientPeer CreateServerPeer(INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler)
-		{
-			//This shouldn't be called by the ProxyLoadBalancing server
-			AppLogger.ErrorFormat("Outgoing connection attempt on Proxy to IP {0} Port {1}. Proxy should not be connecting to other peers", details.RemoteIP, details.RemotePort);
-
-			return null;
-		}
-
-		protected override ClientPeerSession CreateClientSession(INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler)
-		{
-			return peerFactory.Create(sender, details, subService, disconnectHandler);
-		}
-
-		protected override void Setup()
+		protected override void ServerSetup()
 		{
 			//Setup logging first
 			AppLogger = new PhotonServerLog4NetCommonLoggingILogAdapter(this.ApplicationRootPath, this.ApplicationName, this.BinaryPath);
@@ -72,7 +51,7 @@ namespace GladLive.ProxyLoadBalancer
 			//Builds out the IoC container
 			appBaseContainer = builder.Build();
 
-			AppLogger.DebugFormat("GLADLIVE: {0} {1} complete.", nameof(GladLiveProxyLoadBalancerApplicationBase), nameof(Setup));
+			AppLogger.DebugFormat("GLADLIVE: {0} {1} complete.", nameof(GladLiveProxyLoadBalancerApplicationBase), nameof(ServerSetup));
 
 			InitServices();
 		}
@@ -91,6 +70,24 @@ namespace GladLive.ProxyLoadBalancer
 		protected override void TearDown()
 		{
 			AppLogger.InfoFormat("{0} is tearing down server instance.", nameof(GladLiveProxyLoadBalancerApplicationBase));
+		}
+
+		protected override ClientPeerSession CreateClientSession(INetworkMessageRouterService sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler, INetworkMessageRouteBackService routeBack)
+		{
+			return peerFactory.Create(sender, details, subService, disconnectHandler, routeBack);
+		}
+
+		public override ClientPeer CreateServerPeer(INetworkMessageRouterService sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler, INetworkMessageRouteBackService routeBack)
+		{
+			//This shouldn't be called by the ProxyLoadBalancing server
+			AppLogger.ErrorFormat("Outgoing connection attempt on Proxy to IP {0} Port {1}. Proxy should not be connecting to other peers", details.RemoteIP, details.RemotePort);
+
+			return null;
+		}
+
+		protected override void SetupSerializationRegistration(ISerializerRegistry serializationRegistry)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
