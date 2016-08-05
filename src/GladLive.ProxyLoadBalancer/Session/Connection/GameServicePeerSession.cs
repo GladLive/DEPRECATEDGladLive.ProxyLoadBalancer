@@ -1,5 +1,4 @@
-﻿using GladNet.Server.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +11,7 @@ using Easyception;
 using GladNet.Message.Handlers;
 using GladNet.Engine.Common;
 using GladNet.Engine.Server;
+using GladNet.Message;
 
 namespace GladLive.ProxyLoadBalancer
 {
@@ -28,7 +28,7 @@ namespace GladLive.ProxyLoadBalancer
 		/// <summary>
 		/// Request payload handler service.
 		/// </summary>
-		private IResponseMessageHandlerService<GameServicePeerSession> requestHandlerService { get; }
+		private IRequestMessageHandlerService<GameServicePeerSession> requestHandlerService { get; }
 
 		/// <summary>
 		/// Creates a new object that represents a game server session.
@@ -39,13 +39,13 @@ namespace GladLive.ProxyLoadBalancer
 		/// <param name="netMessageSubService">Subscription service for incoming messages.</param>
 		/// <param name="disconnectHandler">Disconnection handler for the session.</param>
 		/// <param name="requestHandler">Request payload handler for the session.</param>
-		public GameServicePeerSession(ILog logger, INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService netMessageSubService, 
-			IDisconnectionServiceHandler disconnectHandler, IRequestPayloadHandlerService<GameServicePeerSession> requestHandler) 
-				: base(logger, sender, details, netMessageSubService, disconnectHandler)
+		public GameServicePeerSession(ILog logger, INetworkMessageRouterService sender, IConnectionDetails details, INetworkMessageSubscriptionService netMessageSubService, 
+			IDisconnectionServiceHandler disconnectHandler, INetworkMessageRouteBackService routebackService, IRequestMessageHandlerService<GameServicePeerSession> requestHandler) 
+				: base(logger, sender, details, netMessageSubService, disconnectHandler, routebackService)
 		{
 			//We check logger null because we want to log now
-			Throw<ArgumentNullException>.If.IsNull(logger, nameof(logger), $"Logging service provided must be non-null.");
-			Throw<ArgumentNullException>.If.IsNull(requestHandler, nameof(requestHandler), $"Request handling service provided must be non-null.");
+			Throw<ArgumentNullException>.If.IsNull(logger)?.Now(nameof(logger), $"Logging service provided must be non-null.");
+			Throw<ArgumentNullException>.If.IsNull(requestHandler)?.Now(nameof(requestHandler), $"Request handling service provided must be non-null.");
 
 			logger.Debug("Created new a new gameserver service peer session.");
 
@@ -55,20 +55,20 @@ namespace GladLive.ProxyLoadBalancer
 		/// <summary>
 		/// Called internally when a request is recieved. (setup using the subscription service)
 		/// </summary>
-		/// <param name="payload">Incoming payload.</param>
+		/// <param name="message">Incoming payload.</param>
 		/// <param name="parameters">Parameters the message was sent with.</param>
-		protected override void OnReceiveRequest(PacketPayload payload, IMessageParameters parameters)
+		protected override void OnReceiveRequest(IRequestMessage message, IMessageParameters parameters)
 		{
 			Throw<ArgumentNullException>.If
-				.IsNull(payload, nameof(payload), $"This indicates a critical error. The GladNet API has provided a null {nameof(PacketPayload)} to the {nameof(OnReceiveRequest)} method.");
+				.IsNull(message)?.Now(nameof(message), $"This indicates a critical error. The GladNet API has provided a null {nameof(IRequestMessage)} to the {nameof(OnReceiveRequest)} method.");
 
 			Throw<ArgumentNullException>.If
-				.IsNull(parameters, nameof(parameters), $"This indicates a critical error. The GladNet API has provided a null {nameof(IMessageParameters)} to the {nameof(OnReceiveRequest)} method.");
+				.IsNull(parameters)?.Now(nameof(parameters), $"This indicates a critical error. The GladNet API has provided a null {nameof(IMessageParameters)} to the {nameof(OnReceiveRequest)} method.");
 
 			//We're not interested in unencrypted messages on the ProxyLoadBalancing server
 			if (!parameters.Encrypted)
 			{
-				Logger.WarnFormat("GameService: {0} at IP {1} tried to send unencrypted payload Type: {2}", PeerDetails.ConnectionID, PeerDetails.RemoteIP, payload.GetType());
+				Logger.WarnFormat("GameService: {0} at IP {1} tried to send unencrypted payload Type: {2}", PeerDetails.ConnectionID, PeerDetails.RemoteIP, message.GetType());
 				return;
 			}
 				
@@ -76,7 +76,7 @@ namespace GladLive.ProxyLoadBalancer
 			Logger.Debug("GameService Recieved a message.");
 
 			//Pass this message to the handlers
-			requestHandlerService.TryProcessPayload(payload, parameters, this);
+			requestHandlerService.TryProcessMessage(message, parameters, this);
 		}
 	}
 }
