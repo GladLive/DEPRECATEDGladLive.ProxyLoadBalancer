@@ -3,12 +3,14 @@ using GladLive.Security.Common;
 using GladLive.Server.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GladLive.ProxyLoadBalancer
 {
+	[MetadataAttribute]
 	public class ProxyLoadBalancerAuthenticationServiceModule : Module
 	{
 		protected override void Load(ContainerBuilder builder)

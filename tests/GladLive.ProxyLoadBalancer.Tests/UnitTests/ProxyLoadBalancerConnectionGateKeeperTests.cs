@@ -1,5 +1,6 @@
 ﻿using GladLive.ProxyLoadBalancer.Settings;
 using GladNet.Common;
+using GladNet.Engine.Common;
 using Moq;
 using NUnit.Framework;
 using System;

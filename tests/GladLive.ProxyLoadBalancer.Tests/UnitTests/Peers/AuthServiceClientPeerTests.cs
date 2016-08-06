@@ -10,6 +10,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Moq.Protected;
+using GladNet.Engine.Common;
+using GladNet.Message.Handlers;
+using GladNet.Message;
+using GladNet.Payload;
 
 namespace GladLive.ProxyLoadBalancer.Tests
 {
@@ -22,8 +26,8 @@ namespace GladLive.ProxyLoadBalancer.Tests
 			//These sorts of tests might seem stupid but it just caught two faults
 			//I checked the wrong object for null.
 			//assert
-			Assert.DoesNotThrow(() => new AuthServiceClientPeer(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
-				Mock.Of<IConnectionDetails>(), Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), Mock.Of<IResponsePayloadHandlerService<AuthServiceClientPeer>>()));
+			Assert.DoesNotThrow(() => new AuthServiceClientPeer(Mock.Of<ILog>(), Mock.Of<INetworkMessageRouterService>(),
+				Mock.Of<IConnectionDetails>(), Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), Mock.Of<INetworkMessageRouteBackService>(), Mock.Of<IResponseMessageHandlerService<AuthServiceClientPeer>>()));
 		}
 
 		[Test]
@@ -32,8 +36,8 @@ namespace GladLive.ProxyLoadBalancer.Tests
 			//These sorts of tests might seem stupid but it just caught two faults
 			//I checked the wrong object for null.
 			//assert
-			Assert.Throws<ArgumentNullException>(() => new AuthServiceClientPeer(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
-				Mock.Of<IConnectionDetails>(), Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), null));
+			Assert.Throws<ArgumentNullException>(() => new AuthServiceClientPeer(Mock.Of<ILog>(), Mock.Of<INetworkMessageRouterService>(),
+				Mock.Of<IConnectionDetails>(), Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), Mock.Of<INetworkMessageRouteBackService>(), null));
 		}
 
 		//TODO: When message parameters are implemented in the GladNet.ASP.Client implementation we should start checking if the messages were encrypted
@@ -61,31 +65,31 @@ namespace GladLive.ProxyLoadBalancer.Tests
 		public static void Test_Session_Does_Process_Encrypted_Messages()
 		{
 			//arrange
-			Mock<IResponsePayloadHandlerService<AuthServiceClientPeer>> handler = new Mock<IResponsePayloadHandlerService<AuthServiceClientPeer>>(MockBehavior.Loose);
-			AuthServiceClientPeer session = new AuthServiceClientPeer(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
-				new Mock<IConnectionDetails>(MockBehavior.Loose).Object, Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), handler.Object);
+			Mock<IResponseMessageHandlerService<AuthServiceClientPeer>> handler = new Mock<IResponseMessageHandlerService<AuthServiceClientPeer>>(MockBehavior.Loose);
+			AuthServiceClientPeer session = new AuthServiceClientPeer(Mock.Of<ILog>(), Mock.Of<INetworkMessageRouterService>(),
+				new Mock<IConnectionDetails>(MockBehavior.Loose).Object, Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), Mock.Of<INetworkMessageRouteBackService>(), handler.Object);
 			Mock<IMessageParameters> messageParameters = new Mock<IMessageParameters>();
 			messageParameters.SetupGet(mp => mp.Encrypted).Returns(true);
 
 			//act
 			//Generate and bind a method to a delegate
-			Action<PacketPayload, IMessageParameters> method = GrabProtectedOnRecieveRequestMethod(session);
-			method.Invoke(Mock.Of<PacketPayload>(), messageParameters.Object);
+			Action<IResponseMessage, IMessageParameters> method = GrabProtectedOnRecieveResponseMethod(session);
+			method.Invoke(Mock.Of<IResponseMessage>(), messageParameters.Object);
 
 			//assert
 			//Make sure the message didn't make it to the handler
-			handler.Verify(x => x.TryProcessPayload(It.IsAny<PacketPayload>(), It.IsAny<IMessageParameters>(), session), Times.Once());
+			handler.Verify(x => x.TryProcessMessage(It.IsAny<IResponseMessage>(), It.IsAny<IMessageParameters>(), session), Times.Once());
 		}
 
 		[Test]
 		public static void Test_Session_Throws_Null_Arg_OnRequestRecieve_When_Payload_Is_Null()
 		{
 			//arrange
-			AuthServiceClientPeer session = new AuthServiceClientPeer(Mock.Of<ILog>(), Mock.Of<INetworkMessageSender>(),
-				new Mock<IConnectionDetails>(MockBehavior.Loose).Object, Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), Mock.Of<IResponsePayloadHandlerService<AuthServiceClientPeer>>());
+			AuthServiceClientPeer session = new AuthServiceClientPeer(Mock.Of<ILog>(), Mock.Of<INetworkMessageRouterService>(),
+				new Mock<IConnectionDetails>(MockBehavior.Loose).Object, Mock.Of<INetworkMessageSubscriptionService>(), Mock.Of<IDisconnectionServiceHandler>(), Mock.Of<INetworkMessageRouteBackService>(), Mock.Of<IResponseMessageHandlerService<AuthServiceClientPeer>>());
 
 			//assert
-			Assert.Throws<ArgumentNullException>(() => GrabProtectedOnRecieveRequestMethod(session).Invoke(null, Mock.Of<IMessageParameters>()));
+			Assert.Throws<ArgumentNullException>(() => GrabProtectedOnRecieveResponseMethod(session).Invoke(null, Mock.Of<IMessageParameters>()));
 		}
 
 		//TODO: When message parameters are implemented in the GladNet.ASP.Client implementation we should start null checking them.
@@ -100,9 +104,9 @@ namespace GladLive.ProxyLoadBalancer.Tests
 			Assert.Throws<ArgumentNullException>(() => GrabProtectedOnRecieveRequestMethod(session).Invoke(Mock.Of<PacketPayload>(), null));
 		}*/
 
-		public static Action<PacketPayload, IMessageParameters> GrabProtectedOnRecieveRequestMethod(AuthServiceClientPeer session)
+		public static Action<IResponseMessage, IMessageParameters> GrabProtectedOnRecieveResponseMethod(AuthServiceClientPeer session)
 		{
-			return Delegate.CreateDelegate(typeof(Action<PacketPayload, IMessageParameters>), session, session.GetType().GetMethod("OnReceiveResponse", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public, null, new Type[] { typeof(PacketPayload), typeof(IMessageParameters) }, null)) as Action<PacketPayload, IMessageParameters>;
+			return Delegate.CreateDelegate(typeof(Action<IResponseMessage, IMessageParameters>), session, session.GetType().GetMethod("OnReceiveResponse", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public, null, new Type[] { typeof(IResponseMessage), typeof(IMessageParameters) }, null)) as Action<IResponseMessage, IMessageParameters>;
 		}
 	}
 }

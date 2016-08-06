@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace GladLive.ProxyLoadBalancer
 {
 	//TODO: Find a way to order handlers by priority
-	public class PayloadDebugLoggingHandler : IRequestMessageHandler<INetPeer>, IEventMessageHandler<INetPeer>, IResponseMessageHandler<INetPeer>, IClassLogger
+	public class PayloadDebugLoggingHandler : IRequestMessageHandler<INetPeer>, IEventMessageHandler<INetPeer>, IResponseMessageHandler<INetPeer>, IRequestMessageHandler<GameServicePeerSession>, IClassLogger
 	{
 		public ILog Logger { get; }
 
@@ -45,6 +45,11 @@ namespace GladLive.ProxyLoadBalancer
 
 			//Always return false for logging so we don't consume
 			return false;
+		}
+
+		public bool TryProcessMessage(IRequestMessage message, IMessageParameters parameters, GameServicePeerSession peer)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
