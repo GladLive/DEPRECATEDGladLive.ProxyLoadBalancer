@@ -79,7 +79,9 @@ namespace GladLive.ProxyLoadBalancer
 
 		protected override void SetupSerializationRegistration(ISerializerRegistry serializationRegistry)
 		{
-			throw new NotImplementedException();
+			//Right now we don't register stuff this way.
+			//In the future we'll move a module over here and fix serialization registration.
+			//throw new NotImplementedException();
 		}
 
 		protected override ILog SetupLogging()
