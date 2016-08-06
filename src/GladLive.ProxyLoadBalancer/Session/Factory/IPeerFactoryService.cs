@@ -1,4 +1,5 @@
 ﻿using GladNet.Common;
+using GladNet.Engine.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace GladLive.ProxyLoadBalancer
 	public interface IPeerFactoryService<TPeerType, TSessionEnumType>
 		where TPeerType : INetPeer where TSessionEnumType : struct, IConvertible
 	{
-		TPeerType Create(INetworkMessageSender sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler);
+		TPeerType Create(INetworkMessageRouterService sender, IConnectionDetails details, INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler, INetworkMessageRouteBackService routeBack);
 
 		bool CanCreate(IConnectionDetails details);
 	}

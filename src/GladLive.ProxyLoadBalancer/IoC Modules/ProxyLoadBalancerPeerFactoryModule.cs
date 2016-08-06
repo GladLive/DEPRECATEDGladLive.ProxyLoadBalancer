@@ -1,7 +1,8 @@
 ﻿using Autofac;
 using Autofac.Core;
 using GladNet.Common;
-using GladNet.Server.Common;
+using GladNet.Engine.Common;
+using GladNet.Engine.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace GladLive.ProxyLoadBalancer
 			{
 				IComponentContext capturableContext = con.Resolve<IComponentContext>();
 
-				return new PeerFactory<GameServicePeerSession>((s, d, ss, dh) => SessionResolve<GameServicePeerSession>(capturableContext, s, d, ss, dh));
+				return new PeerFactory<GameServicePeerSession>((s, d, ss, dh, rbs) => SessionResolve<GameServicePeerSession>(capturableContext, s, d, ss, dh, rbs));
 			})
 				.AsSelf()
 				.SingleInstance();
@@ -43,18 +44,18 @@ namespace GladLive.ProxyLoadBalancer
 			{
 				IComponentContext capturableContext = con.Resolve<IComponentContext>();
 
-				return new PeerFactory<UserClientPeerSession>((s, d, ss, dh) => SessionResolve<UserClientPeerSession>(capturableContext, s, d, ss, dh));
+				return new PeerFactory<UserClientPeerSession>((s, d, ss, dh, rbs) => SessionResolve<UserClientPeerSession>(capturableContext, s, d, ss, dh, rbs));
 			})
 				.AsSelf()
 				.SingleInstance();
 		}
 
 		//Resolves a TSessionType from the context provided
-		private TSessionType SessionResolve<TSessionType>(IComponentContext context, INetworkMessageSender sender, IConnectionDetails details, 
-			INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler)
+		private TSessionType SessionResolve<TSessionType>(IComponentContext context, INetworkMessageRouterService sender, IConnectionDetails details, 
+			INetworkMessageSubscriptionService subService, IDisconnectionServiceHandler disconnectHandler, INetworkMessageRouteBackService routeBackService)
 				where TSessionType : ClientPeerSession
 		{
-			return context.Resolve<TSessionType>(GenerateTypedParameter(sender), GenerateTypedParameter(details), GenerateTypedParameter(subService), GenerateTypedParameter(disconnectHandler));
+			return context.Resolve<TSessionType>(GenerateTypedParameter(sender), GenerateTypedParameter(details), GenerateTypedParameter(subService), GenerateTypedParameter(disconnectHandler), GenerateTypedParameter(routeBackService));
 		}
 
 		private Parameter GenerateTypedParameter<TParameterType>(TParameterType parameter)
