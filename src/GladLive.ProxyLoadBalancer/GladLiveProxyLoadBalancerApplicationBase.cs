@@ -21,11 +21,6 @@ namespace GladLive.ProxyLoadBalancer
 	public class GladLiveProxyLoadBalancerApplicationBase : GladNetAppBase<ProtobufnetSerializerStrategy, ProtobufnetDeserializerStrategy, ProtobufnetRegistry>
 	{
 		/// <summary>
-		/// Application logging service.
-		/// </summary>
-		protected override ILog AppLogger { get; set; }
-
-		/// <summary>
 		/// IoC container type resolver.
 		/// </summary>
 		private IContainer appBaseContainer;
@@ -35,9 +30,6 @@ namespace GladLive.ProxyLoadBalancer
 
 		protected override void ServerSetup()
 		{
-			//Setup logging first
-			AppLogger = new PhotonServerLog4NetCommonLoggingILogAdapter(this.ApplicationRootPath, this.ApplicationName, this.BinaryPath);
-
 			//We should setup AutoFac IoC with the dependencies it'll need to be resolving.
 			ContainerBuilder builder = new ContainerBuilder();
 
@@ -88,6 +80,11 @@ namespace GladLive.ProxyLoadBalancer
 		protected override void SetupSerializationRegistration(ISerializerRegistry serializationRegistry)
 		{
 			throw new NotImplementedException();
+		}
+
+		protected override ILog SetupLogging()
+		{
+			return new PhotonServerLog4NetCommonLoggingILogAdapter(this.ApplicationRootPath, this.ApplicationName, this.BinaryPath);
 		}
 	}
 }
